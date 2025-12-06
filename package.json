@@ -1,0 +1,21 @@
+{
+  "name": "git-ai",
+  "version": "1.0.0",
+  "description": "GitHub automation bot with AI-powered content",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "octokit": "^3.1.2",
+    "openai": "^4.20.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
