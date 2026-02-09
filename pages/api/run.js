@@ -16,8 +16,20 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
   
-  if (!process.env.GITHUB_TOKEN || !process.env.OPENAI_API_KEY) {
-    return res.status(500).json({ error: 'Missing configuration' });
+  const s_requiredEnvs = {
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY
+  };
+  
+  const s_missing = Object.entries(s_requiredEnvs)
+    .filter(([_, value]) => !value)
+    .map(([key]) => key);
+  
+  if (s_missing.length > 0) {
+    return res.status(500).json({ 
+      error: 'Missing configuration',
+      missing: s_missing
+    });
   }
   
   try {
@@ -25,6 +37,7 @@ export default async function handler(req, res) {
     
     return res.status(200).json({
       status: 'completed',
+      timestamp: new Date().toISOString(),
       ...s_result
     });
   } catch (e) {
@@ -32,7 +45,8 @@ export default async function handler(req, res) {
     
     return res.status(500).json({
       status: 'error',
-      error: e.message
+      error: e.message,
+      timestamp: new Date().toISOString()
     });
   }
 }
